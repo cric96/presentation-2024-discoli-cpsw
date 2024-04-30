@@ -1,0 +1,241 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AMS Beamer series / Bologna FC / Template
+% Andrea Omicini
+% Alma Mater Studiorum - Università di Bologna
+% mailto:andrea.omicini@unibo.it
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[handout]{beamer}\mode<handout>{\usetheme{default}}
+%
+\documentclass[presentation, 9pt]{beamer}\mode<presentation>{\usetheme{AMSBolognaFC}}
+%\documentclass[handout]{beamer}\mode<handout>{\usetheme{AMSBolognaFC}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[T1]{fontenc}
+\usepackage{wasysym}
+\usepackage{amsmath,blkarray}
+\usepackage{soul}
+\usepackage[minted,most]{tcolorbox}
+\usepackage{centernot}
+\usepackage{fontawesome}
+\usepackage{fancyvrb}
+\usepackage{hyperref}
+\usepackage{multicol}
+\setminted[scala]{fontsize=\small,frame=lines,baselinestretch=1,obeytabs=true, tabsize=2}
+\setminted[yaml]{fontsize=\large,frame=lines,linenos,baselinestretch=1,obeytabs=true, tabsize=2}
+\usepackage[ddmmyyyy]{datetime}
+\setminted{fontsize=\footnotesize}
+\renewcommand{\dateseparator}{}
+%\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\version}{1}
+
+\usepackage[
+	%backend=biber,
+	backend=bibtex,
+%	citestyle=authoryear-icomp,
+%	maxcitenames=1,
+	bibstyle=numeric,
+	style=ieee]{biblatex}
+\usepackage{graphicx}
+
+	\makeatletter
+
+%\addbibresource{biblio.bib}
+
+\bibliography{biblio}
+
+
+\newcommand\extrafootertext[1]{%
+    \bgroup
+    \renewcommand\thefootnote{\fnsymbol{footnote}}%
+    \renewcommand\thempfootnote{\fnsymbol{mpfootnote}}%
+    \footnotetext[0]{#1}%
+    \egroup
+}
+
+\newcommand{\citeinslide}[1]{\cite{#1}\extrafootertext{\scriptsize\cite{#1} \fullcite{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title[Engineering Distributed CI in
+CPSWs]
+{Engineering Distributed Collective Intelligence in
+Cyber-Physical Swarms}
+%
+%
+\author[\sspeaker{Aguzzi}]
+{\speaker{\textbf{Gianluca Aguzzi}} \href{mailto:gianluca.aguzzi@unibo.it}{gianluca.aguzzi@unibo.it} \\ 
+\speaker{Claudio Savaglio} \href{mailto:csavaglio@dimes.unical.it}{csavaglio@dimes.unical.it}
+}
+\institute[DISI, Univ.\ Bologna]
+{%Dipartimento di Informatica -- Scienza e Ingegneria (DISI)\\
+\textsc{University of Bologna}
+\\
+\textsc{University of Calabria}
+\\[0.1cm]
+\textbf{Talk @} \bold{International Conference on Autonomic Computing and Self-Organizing Systems (ACSOS)}\\[0.15cm]
+%\includegraphics[width=0.15\textwidth]{img/qr-code-today.png}
+}
+%
+\renewcommand{\dateseparator}{/}
+\date[\today]{\today}
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\hsplit}[2]{
+\begin{minipage}{0.48\textwidth}
+#1
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+#2
+\end{minipage}
+}
+\newcommand{\hsplits}[4]{
+\begin{minipage}{#1\textwidth}
+#3
+\end{minipage}
+\hfill
+\begin{minipage}{#2\textwidth}
+#4
+\end{minipage}
+}
+
+\newcommand{\lbl}[1]{\textbf{\textcolor{gray!90!white}{#1}}}
+\newcommand{\enf}[1]{{\textcolor{red}{#1}}}
+\newcommand{\bo}[1]{\textbf{#1}}
+
+\newcommand{\imgh}[2]{
+\begin{figure}
+\centering
+\includegraphics[width=#1\textwidth]{img/#2}
+\end{figure}
+}
+\newcommand{\imgv}[2]{
+\begin{figure}
+\centering
+\includegraphics[height=#1\textheight]{img/#2}
+\end{figure}
+}
+
+\newtcblisting{mycode}[3]{%
+  boxsep=0pt,
+  boxrule=0pt,
+  arc=1mm, 
+  left=1mm,
+  %auto outer arc,
+  size=fbox,%tight,
+  %colframe=blue!40!black, colframe=black!30!white,
+  %colbacktitle=blue!80!white,
+  colback=blue!5,
+  %toprule=0.1mm, bottomrule=0.1mm, rightrule=0.1mm, leftrule=1mm, 
+  listing only,
+  listing options={language=scafi, alsoletter={-},
+    backgroundcolor={},
+  	columns=fullflexible,
+  	lineskip={-1.5pt},
+  	xleftmargin=0px,
+  	belowskip={0px},
+  	aboveskip={0px},
+  	frame=none,
+  	#2
+  },
+  title={#3},#1
+}
+\lstdefinestyle{s}{basicstyle=\ttfamily\footnotesize}
+\lstdefinestyle{ss}{basicstyle=\ttfamily\scriptsize}
+\lstdefinestyle{sss}{basicstyle=\ttfamily\tiny}
+\lstdefinestyle{conf}{language={},morecomment=[l][\color{darkgreen}]{\#},
+basicstyle=\ttfamily\scriptsize}
+
+\newcommand{\question}[1]{\textcolor{darkgray}{\emph{\bo{#1}}}}
+\newcommand{\refslide}[1]{Slide~\ref{#1}}
+
+\begin{document}
+\frame{\titlepage}
+%===============================================================================
+\begin{frame}{Context}
+  \begin{center}
+  \Huge{\textbf{Cyber-Physical Swarms}}
+
+  \large{
+  A \bold{coordinated} network of \emph{intelligent}, \emph{interconnected} devices designed to \underline{collaboratively} execute complex and \underline{collective} tasks.}
+  \end{center}
+  \begin{center}
+  \includegraphics[width=0.32\textwidth]{example-image-a}
+  \includegraphics[width=0.32\textwidth]{example-image-a}
+  \includegraphics[width=0.32\textwidth]{example-image-a}
+  \end{center}
+\end{frame}
+\begin{frame}{Engineering Distributed CI in CPSWs}
+  \begin{exampleblock}{Distributed Collective Intelligence (CI)}
+    A \emph{distributed} system that \emph{collectively} solves problems by \emph{interacting} with the environment and \emph{sharing} information among its components.
+  \end{exampleblock}
+  \begin{alertblock}{Research Question}
+    \begin{itemize}
+      \item What are the main characteristics of CPSWs and how
+      these difference to other distributed systems?
+      \item What are the main approaches to engineering CPSWs?
+      \item What are the main challenges in engineering CPSWs
+    \end{itemize}
+  \end{alertblock}
+  \begin{block}{This Talk}
+    \begin{itemize}
+      \item A comprehensive exploration of
+      the engineering principles, challenges, and applications of CPSWs.
+    \end{itemize}
+  \end{block}
+\end{frame}
+\begin{frame}[allowframebreaks]{Properties}
+  \begin{exampleblock}{Large scale}
+    CPSWs are composed of a large number (\underline{hundred}, \underline{thousands}) of devices that interact with each other. \\
+  \end{exampleblock}
+  \begin{exampleblock}{Device heterogeneity}
+    Devices in CPSWs have different \underline{capabilities} and functionalities. \\
+  \end{exampleblock}
+  \begin{exampleblock}{Behaviour homogeneity}
+    Devices in CPSWs share the \bold{same} behaviour while complexity emerges from \bold{interactions} among them. \\
+  \end{exampleblock}
+  \begin{exampleblock}{Distributed Control}
+    Devices in CPSWs in general have \bold{no central control} and \bold{no global knowledge}. \\
+  \end{exampleblock}
+  \begin{exampleblock}{Self-Organization}
+    Devices in CPSWs \bold{organize} themselves to achieve \bold{global} objectives. \\
+  \end{exampleblock}
+  \begin{exampleblock}{Openess}
+    CPSWs are \bold{open} systems, therefore we cannot predict the whole popolation of devices at design time. \\
+  \end{exampleblock}
+  \begin{exampleblock}{Cyber-Physical Interaction}
+    Devices in CPSWs interact with the \bold{physical} environment. \\
+  \end{exampleblock}
+\end{frame}
+\begin{frame}{CPSWs -- Related Concept}
+
+\end{frame}
+\begin{frame}{CPSWs -- Sota}
+
+\end{frame}
+\begin{frame}{Engineering Challenges}
+
+\end{frame}
+\begin{frame}{Conclusions}
+\end{frame}
+
+%/////////
+\frame{\titlepage}
+%/////////
+
+%===============================================================================
+\section*{\refname}
+%===============================================================================
+
+%%%%
+\setbeamertemplate{page number in head/foot}{}
+%/////////
+\begin{frame}[allowframebreaks]{References}
+\def\bibfont{\footnotesize}
+\printbibliography
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
